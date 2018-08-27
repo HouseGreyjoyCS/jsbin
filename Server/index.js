@@ -6,6 +6,7 @@ const io = require('socket.io')(http);
 
 const adminRouter = express.Router();
 const binRouter = express.Router();
+const loginRouter = express.Router();
 const path = require('path');
 const fs = require('fs');
 const bodyparser = require('body-parser');
@@ -14,6 +15,14 @@ const db = require('./db/bins.js');
 app.use(bodyparser.json());
 app.use('/admin', adminRouter);
 app.use('/bin', binRouter);
+app.use('/login', loginRouter);
+
+loginRouter.use(express.static('build/login'));
+
+loginRouter.get('/login', (req, res) => {
+  res.sendfile(path.resolve(__dirname, 'build/login/index.html'));
+});
+
 
 adminRouter.use(express.static('build/admin'));
 
