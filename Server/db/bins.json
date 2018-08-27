@@ -1,0 +1,14 @@
+{
+  "hello": {
+    "terminal": "test\n",
+    "code": "console.log('test');"
+  },
+  "dev": {
+    "terminal": "",
+    "code": ""
+  },
+  "test": {
+    "terminal": "",
+    "code": ""
+  }
+}
