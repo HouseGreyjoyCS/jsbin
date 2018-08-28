@@ -6,11 +6,14 @@ const io = require('socket.io')(http);
 
 const adminRouter = express.Router();
 const binRouter = express.Router();
-const loginRouter = express.Router();
 const path = require('path');
 const fs = require('fs');
 const bodyparser = require('body-parser');
 const db = require('./db/bins.js');
+
+const loginRouter = express.Router();
+const userController = require('./controllers/userController');
+
 
 app.use(bodyparser.json());
 app.use('/admin', adminRouter);
@@ -19,10 +22,12 @@ app.use('/login', loginRouter);
 
 loginRouter.use(express.static('build/login'));
 
-loginRouter.get('/login', (req, res) => {
-  res.sendfile(path.resolve(__dirname, 'build/login/index.html'));
-});
+// loginRouter.get('/login', (req, res) => {
+//   res.sendfile(path.resolve(__dirname, 'build/login/index.html'));
+// }); 
 
+//function below is for users on the login page to create an account if they dont have one currently
+app.post('/createUser', userController.createUser);
 
 adminRouter.use(express.static('build/admin'));
 
