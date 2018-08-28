@@ -3,28 +3,18 @@ const bcrypt = require('bcryptjs');
 const db = require('../db.js');
 const userController = {};
 
-function genPassword(pass) {
-  //bcrypt function needs to be promise based
- return bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
-    return bcrypt.hash(pass, salt, (err, hash) => {
-      return hash;
-    })
-  })
-}
-
-
 userController.createUser = (req, res, next) => {
 
 
-  let userPC = bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
-    return bcrypt.hash(req.body.password, salt, (err, hash) => {
-      return hash;
-    })
+  bcrypt.genSalt(SALT_WORK_FACTOR)
+  .then(salt => {
+    return bcrypt.hash(req.body.password, salt)
   })
+  .then(hash => {
+    db.query('INSERT INTO users(username, password) VALUES ($1, $2) RETURNING _id', [req.body.username, hash])
+  })
+  .catch(err => {throw new Error('error bitch: ' + err)})
 
-  db.query('INSERT INTO users(username, password) VALUES ($1, $2) RETURNING _id', [req.body.username, 'userPC'])
-  // .then(data => res.send('done'))
-  // .catch(error => console.log('error bitch:', error));
   next();
 }
 
