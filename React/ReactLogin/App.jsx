@@ -10,6 +10,7 @@ class App extends React.Component{
             password:""
         }
         this.passwordCheck = this.passwordCheck.bind(this);
+        this.signUp = this.signUp.bind(this);
         this.handleGet = this.handleGet.bind(this);
     }
     passwordCheck() {
@@ -22,6 +23,9 @@ class App extends React.Component{
             this.setState({ password: res})
         })
         .catch(err => console.log('Error grabbing bins ', err))
+    }
+    signUp() {
+        // post request to DB goes here
     }
     handleGet(e){
         this.setState({password: e.target.value})
