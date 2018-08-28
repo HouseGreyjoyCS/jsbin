@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import Password from "./Password";
+import Signup from "./Signup";
+import Login from "./Login";
+import { BrowserRouter as Router, Route, hashHistory, Link } from "react-router-dom";
 
-class Bin extends React.Component{
+class App extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
@@ -27,10 +29,18 @@ class Bin extends React.Component{
     
     render () {
        return (
-            <div>
-                <Password passwordCheck={this.passwordCheck} password={this.handleGet}/>
-            </div>
+           <div className="loginWrapper">
+           <Router>
+               <div>
+                   <Route path="/login" render={() => <Login />} />
+                   <Route path="/signup" render={() => <Signup />} />
+                </div>
+           </Router>
+           </div>
+            // <div>
+            //     <Signup passwordCheck={this.passwordCheck} password={this.handleGet}/>
+            // </div>
         )
     }
 }
-export default Bin;
+export default App;
