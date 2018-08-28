@@ -29,8 +29,8 @@ CREATE TABLE "bins" (
 
 
 CREATE TABLE "sessions" (
-  "session_id" varchar NOT NULL,
-  "session_time_stamp" DATE NOT NULL
+  "session_id" serial NOT NULL,
+  "session_time_stamp" TIMESTAMP default current_timestamp
 ) WITH (
   OIDS=FALSE
 );
