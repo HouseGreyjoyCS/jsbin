@@ -62,12 +62,12 @@ binController.getBin = (req, res, next) => {
   
   
   
-//   if (req.params.name.split('.')[req.params.name.split('.').length - 1] === 'js'  || 
-//   req.params.name.split('.')[req.params.name.split('.').length - 1] === 'map' ||
-//   req.params.name.split('.')[req.params.name.split('.').length - 1] === 'css') {
+  if (req.params.name.split('.')[req.params.name.split('.').length - 1] === 'js'  || 
+  req.params.name.split('.')[req.params.name.split('.').length - 1] === 'map' ||
+  req.params.name.split('.')[req.params.name.split('.').length - 1] === 'css') {
     
-//     return next('route');
-//   }
+    return next('route');
+  }
   
   //they're looking for the actual bin data, instead of peripheral data about the bin, which comes second.
   let foundDB = db.findOne(req.params.name)
