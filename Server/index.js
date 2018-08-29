@@ -35,7 +35,7 @@ loginRouter.use(express.static('build/login'));
 //function below is for users on the login page to create an account if they dont have one currently
 app.post('/createUser', userController.createUser, cookieController.setSsidCookie, sessionController.startSession);
 
-
+app.post('/loginUser', userController.loginUser, sessionController.updateSession, cookieController.setSsidCookie, sessionController.startSession)
 
 adminRouter.use(express.static('build/admin'));
 
