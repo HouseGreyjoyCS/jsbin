@@ -23,13 +23,6 @@ const sessionController = require('./controllers/sessionController');
 app.use(bodyparser.json());
 app.use(cookieParser());
 
-
-app.post('/createUser', userController.createUser, cookieController.setSsidCookie, sessionController.startSession);
-
-
-
-
-
 app.use('/admin', adminRouter);
 app.use('/bin', binRouter);
 app.use('/login', loginRouter);
@@ -41,6 +34,7 @@ loginRouter.use(express.static('build/login'));
 // }); 
 
 //function below is for users on the login page to create an account if they dont have one currently
+app.post('/createUser', userController.createUser, cookieController.setSsidCookie, sessionController.startSession);
 
 
 
@@ -158,5 +152,3 @@ http.listen(3000, (err) => {
   if (err) throw new Error(err);
   console.log('Listening on Port 3000');
 });
-
-
