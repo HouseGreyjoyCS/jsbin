@@ -28,7 +28,7 @@ class App extends React.Component{
             username: username,
             password: password,
         }
-        fetch(`http://localhost:3000/admin/createUser`, {
+        fetch('/createUser', {
             method: 'POST',
             body: JSON.stringify(newPost),
             headers: {
