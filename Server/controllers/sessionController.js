@@ -10,7 +10,7 @@ sessionController.startSession = (req, res) => {
   // res.sendFile(path.resolve(__dirname, '../../build/admin/index.html'));
 }
 
-sessionController.updateSession = (req, res) => {
+sessionController.updateSession = (req, res, next) => {
   db.query('UPDATE sessions SET session_time_stamp = $1 WHERE session_id = $2', ['now()', res.locals.data._id])
   .then(() =>  next())
 }
