@@ -21,7 +21,6 @@ userController.createUser = (req, res, next) => {
     .catch(err => {
       console.log('hi im an error', err);
     })
-    console.log(res.locals);
     next();
   })
   .catch(err => {

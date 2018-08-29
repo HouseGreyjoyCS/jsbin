@@ -35,9 +35,9 @@ class App extends React.Component{
                 "Content-Type": "application/json"
             },
         })
-        .then(data => {
-            if(data.response) {
-                redirect: window.location.href = 'http://localhost:3000/admin/';
+        .then(res => {
+            if(res) {
+                // redirect: window.location.href = 'http://localhost:3000/admin/';
             } else {
                 alert("error on signup!");
             }
