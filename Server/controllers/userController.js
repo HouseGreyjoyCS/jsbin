@@ -6,7 +6,6 @@ const SALT_WORK_FACTOR = 10;
 const userController = {};
 
 userController.createUser = (req, res, next) => {
-
   //first check whether user already exists
   bcrypt.genSalt(SALT_WORK_FACTOR)
   .then(salt => {

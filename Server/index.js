@@ -12,12 +12,13 @@ const bodyparser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
 const db = require('./db/bins.js');
+const realDb = require('./db.js');
 
-const loginRouter = express.Router();
-const userController = require('./controllers/userController');
-const cookieController = require('./controllers/cookieController');
-const sessionController = require('./controllers/sessionController');
-
+const loginRouter       =  express.Router();
+const userController    =  require('./controllers/userController');
+const cookieController  =  require('./controllers/cookieController');
+const sessionController =  require('./controllers/sessionController');
+const binController     =  require('./controllers/binController');
 
 app.use(bodyparser.json());
 app.use(cookieParser());
@@ -68,11 +69,7 @@ adminRouter.get('/allBins', (req, res) => {
 
 // takes in an object in body containing a key name with the value of the name of the bin to be created
 // and creates an object in the database with the given value
-adminRouter.post('/addBin', (req, res) => {
-  if (!req.body || !req.body.name) return res.status(500).json({ error: 'Must send new bin name.' });
-  db.create(req.body.name);
-  return res.json({ success: 'successfully created' });
-});
+adminRouter.post('/addBin', binController.addBin);
 
 // takes in an object in body containing a key name with the value of the name of the bin to be deleted
 // deletes the db entry with the given value
@@ -87,7 +84,6 @@ adminRouter.delete('/deleteBin', (req, res) => {
 
 
 binRouter.get('/:name/getContent', (req, res) => {
-  // console.log('user is trying to access a bin');
 });
 
 app.get('/webworker/:name', (req, res) => {
@@ -99,35 +95,7 @@ app.get('/webworker/:name', (req, res) => {
   });
 });
 
-binRouter.get('/:name', (req, res, next) => {
-  console.log('user is trying to access the bin!');
-
-  //this is where you put the routing for the bins!
-  console.log(req.params.name);
-
-
-
-
-
-  if (req.params.name.split('.')[req.params.name.split('.').length - 1] === 'js'  || 
-      req.params.name.split('.')[req.params.name.split('.').length - 1] === 'map' ||
-      req.params.name.split('.')[req.params.name.split('.').length - 1] === 'css') {
-
-    return next('route');
-  }
-
-  //they're looking for the actual bin data, instead of peripheral data about the bin, which comes second.
-  let foundDB = db.findOne(req.params.name)
-  if (foundDB) {
-    if(/*IF FOUNDDB USERS INCLUDES THE USER (which you get from the session cookie in their browser) */ true){
-      res.sendFile(path.resolve(__dirname, '../build/bin/index.html'));
-    } else {
-      //res.sendStatus UNAUTHORIZED FOR THIS BIN!!!!!!!!!!
-    }
-  } else {
-    res.sendStatus(404).json({ error: 'This bin does not exist!!!' });
-  }
-});
+binRouter.get('/:name', binController.getBin);
 
 binRouter.use(express.static('build/bin'));
 
