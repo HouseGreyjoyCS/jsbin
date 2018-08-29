@@ -23,7 +23,8 @@ class Bin extends React.Component{
         this.updateCode = this.updateCode.bind(this);
         this.updateTerminal= this.updateTerminal.bind(this);
         this.setSocket = this.setSocket.bind(this);
-        this.handleGet = this.handleGet.bind(this)
+        this.handleGet = this.handleGet.bind(this);
+        this.saveCode = this.saveCode.bind(this);
     }
 
    handleChange(e) {
@@ -67,6 +68,32 @@ class Bin extends React.Component{
         this.setState({socket: this.state.socket, terminalText: this.state.terminalText, code: this.state.code, webWorker: null});
     }
 
+    saveCode() {
+        //Save code to database
+        let code = this.state.code;
+        console.log(code);
+
+        let newPost = {
+            saved_data: code,
+        }
+
+        fetch('/saveCode', {
+            method: 'POST',
+            body: JSON.stringify(newPost),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+        .then(res => {
+            if(res) {
+                console.log("Code Saved");
+            } else {
+                console.log("Error saving code");
+            }
+        })
+        .catch(error => console.error('Error ', error))
+    }
+
     componentDidMount () {
         socket = io.connect('http://localhost:3000/bin/' + window.location.href.split('/')[window.location.href.split('/').length - 1]);
         this.setSocket(socket);
@@ -94,7 +121,7 @@ class Bin extends React.Component{
                     <CodeEditor onChange={this.handleChange} code={this.state.code} handleTab={this.handleTab}/>
                     <Terminal terminalText={this.state.terminalText} />
                 </div>
-                <ToolBar onClick={this.handleClick} killWorker={this.killWorker} code={this.state.code} />
+                <ToolBar onClick={this.handleClick} killWorker={this.killWorker} code={this.state.code} saveCode={this.saveCode}/>
             </div>
         )
     }
