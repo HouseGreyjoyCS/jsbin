@@ -73,9 +73,13 @@ class Bin extends React.Component{
         let code = this.state.code;
         console.log(code);
 
+        let newPost = {
+            saved_data: code,
+        }
+
         fetch('/saveCode', {
             method: 'POST',
-            body: code,
+            body: JSON.stringify(newPost),
             headers: {
                 "Content-Type": "application/json"
             },
