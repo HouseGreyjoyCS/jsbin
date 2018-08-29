@@ -36,7 +36,7 @@ class Signup extends Component {
                 <input type="text" placeholder="Password" value={this.state.password_val} onChange={this.handleChangePassword} required/>
                 <br />
                 <br />
-                <input type="submit" value="Log In" />
+                <input type="submit" value="Sign Up" />
             </form>
             <p>Already have an account? <Link to='/login'>Log In</Link></p>
         </div>

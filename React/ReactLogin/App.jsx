@@ -10,37 +10,40 @@ class App extends React.Component{
             username:'',
             password:'',
         }
-        // this.passwordCheck = this.passwordCheck.bind(this);
+        
         this.logIn = this.logIn.bind(this);
         this.signUp = this.signUp.bind(this);
-        // this.handleGet = this.handleGet.bind(this);
     }
-    // passwordCheck() {
-    //     fetch('http://localhost:3000/bin/:name')
-    //     .then((res =>{
-    //         res.json()
-    //     } ))
-    //     .then(res => {
-    //         console.log()
-    //         this.setState({ password: res})
-    //     })
-    //     .catch(err => console.log('Error grabbing bins ', err))
-    // }
+   
     logIn(username, password) {
-        // post request to DB goes here - TO DO
         console.log("username from App.jsx logIn", username);
         console.log("password from App.jsx logIn", password);
         //window.location.href = 'http://localhost:3000/admin/'
     }
     signUp(username, password) {
-        // post request to DB goes here - TO DO
         console.log("username from App.jsx signUp", username);
         console.log("password from App.jsx signUp", password);
-        //window.location.href = 'http://localhost:3000/admin/'
+        
+        let newPost = {
+            username: username,
+            password: password,
+        }
+        fetch(`http://localhost:3000/admin/createUser`, {
+            method: 'POST',
+            body: JSON.stringify(newPost),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+        .then(data => {
+            if(data.response) {
+                redirect: window.location.href = 'http://localhost:3000/admin/';
+            } else {
+                alert("error on signup!");
+            }
+        })
+        .catch(error => console.error('Error ', error))
     }
-    // handleGet(e){
-    //     this.setState({password: e.target.value})
-    // }
     
     render () {
        return (
@@ -52,9 +55,6 @@ class App extends React.Component{
                 </div>
            </Router>
            </div>
-            // <div>
-            //     <Signup passwordCheck={this.passwordCheck} password={this.handleGet}/>
-            // </div>
         )
     }
 }
