@@ -43,6 +43,8 @@ userController.loginUser = (req, res, next) => {
       })
       res.locals.data = {};
       res.locals.data._id = data[0]._id;
+      res.locals.data.created_bins = data[0].created_bins;
+      res.locals.data.accessed_bins = data[0].accessed_bins;
       next();   
     }
   })
