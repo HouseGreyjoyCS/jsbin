@@ -19,13 +19,11 @@ userController.createUser = (req, res, next) => {
     res.locals.data = data;
     db.query('INSERT INTO sessions(session_id) VALUES($1)', [data._id])
     .catch(err => {
-      console.log('hi im an error', err);
+      res.send(err);
     })
-    console.log(res.locals);
     next();
   })
   .catch(err => {
-    console.log('err')
     res.send(err);
   })
 }
