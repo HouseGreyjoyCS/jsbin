@@ -16,10 +16,10 @@ CREATE TABLE "bins" (
   "bin_name" varchar NOT NULL UNIQUE,
   "created_date" DATE NOT NULL,
   "admin" varchar NOT NULL,
-  "users" varchar NOT NULL,
-  "password" varchar NOT NULL,
-  "saved_data" varchar NOT NULL,
-  "date_of_last_save" DATE NOT NULL,
+  "users" varchar,
+  "password" varchar,
+  "saved_data" varchar,
+  "date_of_last_save" DATE,
   "description" varchar,
   CONSTRAINT bins_pk PRIMARY KEY ("_id")
 ) WITH (
