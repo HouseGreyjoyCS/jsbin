@@ -6,8 +6,11 @@ const SALT_WORK_FACTOR = 10;
 const userController = {};
 
 userController.createUser = (req, res, next) => {
+  console.log('someone is trying to create a new user!');
+  console.log('this is their request body: ', req.body)
   bcrypt.genSalt(SALT_WORK_FACTOR)
   .then(salt => {
+    console.log('generated salt; hashing password')
     return bcrypt.hash(req.body.password, salt)
   })
   .then(hash => {
@@ -25,7 +28,7 @@ userController.createUser = (req, res, next) => {
     next();
   })
   .catch(err => {
-    console.log('err')
+    console.error(err);
     res.send(err);
   })
 }

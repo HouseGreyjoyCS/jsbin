@@ -10,5 +10,13 @@
   "test": {
     "terminal": "",
     "code": ""
+  },
+  "newbin": {
+    "terminal": "",
+    "code": ""
+  },
+  "testintgvin": {
+    "terminal": "",
+    "code": ""
   }
 }

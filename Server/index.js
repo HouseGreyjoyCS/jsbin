@@ -14,11 +14,11 @@ const cookieParser = require('cookie-parser');
 const db = require('./db/bins.js');
 const realDb = require('./db.js');
 
-const loginRouter = express.Router();
-const userController = require('./controllers/userController');
-const cookieController = require('./controllers/cookieController');
-const sessionController = require('./controllers/sessionController');
-
+const loginRouter       =  express.Router();
+const userController    =  require('./controllers/userController');
+const cookieController  =  require('./controllers/cookieController');
+const sessionController =  require('./controllers/sessionController');
+const binController     =  require('./controllers/binController');
 
 app.use(bodyparser.json());
 app.use(cookieParser());
@@ -69,17 +69,7 @@ adminRouter.get('/allBins', (req, res) => {
 
 // takes in an object in body containing a key name with the value of the name of the bin to be created
 // and creates an object in the database with the given value
-adminRouter.post('/addBin', (req, res) => {
-  if (!req.body || !req.body.name) return res.status(500).json({ error: 'Must send new bin name.' });
-  //get the req.cookie (put cookieparser in the middleware before this)
-  //query the database to see if the cookie is attached to an active session
-  //query the database to find the user attached to the active session attached to the cookie and store their username
-
-  //dbReal.query('INSERT INTO BINS ('bin_name', 'created_date', 'admin', 'users', 'password', saved_data, date_of_last_save, description))
-  //VALUES ('req.body.name', Date.now(), thisUser, [], bcrypt(req.body.password), Date.now(), null);
-  db.create(req.body.name); //replace with thing that actually adds bin in the database
-  return res.json({ success: 'successfully created' });
-});
+adminRouter.post('/addBin', binController.addBin);
 
 // takes in an object in body containing a key name with the value of the name of the bin to be deleted
 // deletes the db entry with the given value
@@ -126,6 +116,7 @@ binRouter.get('/:name', (req, res, next) => {
   //they're looking for the actual bin data, instead of peripheral data about the bin, which comes second.
   let foundDB = db.findOne(req.params.name)
   if (foundDB) {
+        console.log('users session id: ', req.cookies);
         //find the user's session id from their cookies, check to make sure its active
         //find their username, check to see that they are authorized to see the bin they're requesting
     if(/*IF FOUNDDB USERS INCLUDES THE USER (which you get from the session cookie in their browser) */ true){
