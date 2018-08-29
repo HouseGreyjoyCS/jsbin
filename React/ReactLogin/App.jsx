@@ -37,7 +37,7 @@ class App extends React.Component{
         })
         .then(res => {
             if(res) {
-                // redirect: window.location.href = 'http://localhost:3000/admin/';
+                redirect: window.location.href = 'http://localhost:3000/admin/';
             } else {
                 alert("error on signup!");
             }
