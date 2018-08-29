@@ -15,15 +15,29 @@ class App extends React.Component{
         this.signUp = this.signUp.bind(this);
     }
    
-    logIn(username, password) {
-        console.log("username from App.jsx logIn", username);
-        console.log("password from App.jsx logIn", password);
-        //window.location.href = 'http://localhost:3000/admin/'
+    logIn(username, password) {        
+        let newPost = {
+            username: username,
+            password: password,
+        }
+        fetch('/verifyUser', {
+            method: 'POST',
+            body: JSON.stringify(newPost),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+        .then(res => {
+            if(res) {
+                redirect: window.location.href = 'http://localhost:3000/admin/';
+            } else {
+                alert("Invalid username/password. Try again.");
+            }
+        })
+        .catch(error => console.error('Error ', error))
     }
+
     signUp(username, password) {
-        console.log("username from App.jsx signUp", username);
-        console.log("password from App.jsx signUp", password);
-        
         let newPost = {
             username: username,
             password: password,
