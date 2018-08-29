@@ -28,7 +28,7 @@ binController.addBin = (req, res, next) => {
         realDb.one(query, binData).then((result) => {
             console.log('Add bin successful!');
             console.log('create bin ID:', result._id);
-            realDb.query('update users set created_bins = $1 where _id = $2', [result._id ,data.session_id])
+            realDb.query("update users set created_bins = $1 || created_bins where _id = $2", [result._id +" ",data.session_id])
                 .then(()=>{
                     return res.json({ success: 'successfully created' });
                 })
@@ -51,7 +51,7 @@ binController.addBin = (req, res, next) => {
         return res.send(err);
     })
     // //query the database to find the user attached to the active session attached to the cookie and store their username
-
+    
     // console.log(query, []);
     // dbReal.query(query, [])
 

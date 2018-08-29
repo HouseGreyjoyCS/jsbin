@@ -12,7 +12,7 @@ userController.createUser = (req, res, next) => {
     return bcrypt.hash(req.body.password, salt);
   })
   .then(hash => {
-    return db.one('INSERT INTO users(username, password) VALUES ($1, $2) RETURNING _id', [req.body.username, hash]);
+    return db.one('INSERT INTO users(username, password, created_bins) VALUES ($1, $2, $3) RETURNING _id', [req.body.username, hash, ' ']);
     //.then below passes the '_id' that we are returning from the above insert insert
     //'RETURNING _id'. it is this id we have specified to be the foreign key for our session table
   })
@@ -25,6 +25,7 @@ userController.createUser = (req, res, next) => {
     next();
   })
   .catch(err => {
+    console.error(err);
     res.send(err);
   })
 }
