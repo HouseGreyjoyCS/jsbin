@@ -21,13 +21,22 @@ binController.addBin = (req, res, next) => {
         result = data;
         let columns = '("bin_name", "created_date", "admin")'
         let binDataString = "($1, $2, $3)"
-        let query = "INSERT INTO bins "+columns+" VALUES "+binDataString;
+        let query = "insert into bins "+columns+" values "+binDataString+' returning _id';
         let binData = [req.body.name, 'now()', data.session_id];
         console.log('add bin query: ', query, binData);
 
-        realDb.query(query, binData).then((result) => {
+        realDb.one(query, binData).then((result) => {
             console.log('Add bin successful!');
-            return res.json({ success: 'successfully created' });
+            console.log('create bin ID:', result._id);
+            realDb.query('update users set created_bins = $1 where _id = $2', [result._id ,data.session_id])
+                .then(()=>{
+                    return res.json({ success: 'successfully created' });
+                })
+                .catch((err)=>{
+                    console.log('error updating user');
+                    console.error(err);
+                    return res.send(err);
+                })
         })
         .catch((err) => {
             console.log('error inserting bin')
