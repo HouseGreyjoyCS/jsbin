@@ -6,15 +6,23 @@ const SALT_WORK_FACTOR = 10;
 const userController = {};
 
 userController.createUser = (req, res, next) => {
+<<<<<<< HEAD
   console.log('someone is trying to create a new user!');
   console.log('this is their request body: ', req.body)
   bcrypt.genSalt(SALT_WORK_FACTOR)
   .then(salt => {
     console.log('generated salt; hashing password')
     return bcrypt.hash(req.body.password, salt)
+=======
+
+  //first check whether user already exists
+  bcrypt.genSalt(SALT_WORK_FACTOR)
+  .then(salt => {
+    return bcrypt.hash(req.body.password, salt);
+>>>>>>> master
   })
   .then(hash => {
-    return db.one('INSERT INTO users(username, password) VALUES ($1, $2) RETURNING _id', [req.body.username, hash])
+    return db.one('INSERT INTO users(username, password) VALUES ($1, $2) RETURNING _id', [req.body.username, hash]);
     //.then below passes the '_id' that we are returning from the above insert insert
     //'RETURNING _id'. it is this id we have specified to be the foreign key for our session table
   })
@@ -22,14 +30,35 @@ userController.createUser = (req, res, next) => {
     res.locals.data = data;
     db.query('INSERT INTO sessions(session_id) VALUES($1)', [data._id])
     .catch(err => {
-      console.log('hi im an error', err);
+      res.send(err);
     })
-    console.log(res.locals);
     next();
   })
   .catch(err => {
+<<<<<<< HEAD
     console.error(err);
+=======
+>>>>>>> master
     res.send(err);
+  })
+}
+
+userController.loginUser = (req, res, next) => {
+  //get the password that they sent, 
+  //run it through bcrypt and then compare that to what is saved in the db
+  db.query('SELECT * from users WHERE username = $1', [req.body.username])
+  .then(data => {
+    if (data[0].username) {
+      bcrypt.compare(req.body.password, data[0].password, (err, res) => {
+        if (err) {
+          console.log('error with loggin password: ', err);
+          return res.send(err);
+        } 
+      })
+      res.locals.data = {};
+      res.locals.data._id = data[0]._id;
+      next();   
+    }
   })
 }
 

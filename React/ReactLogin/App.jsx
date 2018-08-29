@@ -7,28 +7,56 @@ class App extends React.Component{
     constructor(props) {
         super(props);
         this.state = {
-            password:""
+            username:'',
+            password:'',
         }
-        this.passwordCheck = this.passwordCheck.bind(this);
+        
+        this.logIn = this.logIn.bind(this);
         this.signUp = this.signUp.bind(this);
-        this.handleGet = this.handleGet.bind(this);
     }
-    passwordCheck() {
-        fetch('http://localhost:3000/bin/:name')
-        .then((res =>{
-            res.json()
-        } ))
-        .then(res => {
-            console.log()
-            this.setState({ password: res})
+   
+    logIn(username, password) {        
+        let newPost = {
+            username: username,
+            password: password,
+        }
+        fetch('/verifyUser', {
+            method: 'POST',
+            body: JSON.stringify(newPost),
+            headers: {
+                "Content-Type": "application/json"
+            },
         })
-        .catch(err => console.log('Error grabbing bins ', err))
+        .then(res => {
+            if(res) {
+                redirect: window.location.href = 'http://localhost:3000/admin/';
+            } else {
+                alert("Invalid username/password. Try again.");
+            }
+        })
+        .catch(error => console.error('Error ', error))
     }
-    signUp() {
-        // post request to DB goes here
-    }
-    handleGet(e){
-        this.setState({password: e.target.value})
+
+    signUp(username, password) {
+        let newPost = {
+            username: username,
+            password: password,
+        }
+        fetch('/createUser', {
+            method: 'POST',
+            body: JSON.stringify(newPost),
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+        .then(res => {
+            if(res) {
+                redirect: window.location.href = 'http://localhost:3000/admin/';
+            } else {
+                alert("error on signup!");
+            }
+        })
+        .catch(error => console.error('Error ', error))
     }
     
     render () {
@@ -36,14 +64,11 @@ class App extends React.Component{
            <div className="loginWrapper">
            <Router>
                <div>
-                   <Route path="/login" render={() => <Login />} />
-                   <Route path="/signup" render={() => <Signup />} />
+                   <Route path="/login" render={() => <Login logIn={this.logIn}/>} />
+                   <Route path="/signup" render={() => <Signup signUp={this.signUp}/>} />
                 </div>
            </Router>
            </div>
-            // <div>
-            //     <Signup passwordCheck={this.passwordCheck} password={this.handleGet}/>
-            // </div>
         )
     }
 }
