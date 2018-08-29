@@ -6,11 +6,20 @@ const SALT_WORK_FACTOR = 10;
 const userController = {};
 
 userController.createUser = (req, res, next) => {
+<<<<<<< HEAD
+  console.log('someone is trying to create a new user!');
+  console.log('this is their request body: ', req.body)
+  bcrypt.genSalt(SALT_WORK_FACTOR)
+  .then(salt => {
+    console.log('generated salt; hashing password')
+    return bcrypt.hash(req.body.password, salt)
+=======
 
   //first check whether user already exists
   bcrypt.genSalt(SALT_WORK_FACTOR)
   .then(salt => {
     return bcrypt.hash(req.body.password, salt);
+>>>>>>> master
   })
   .then(hash => {
     return db.one('INSERT INTO users(username, password) VALUES ($1, $2) RETURNING _id', [req.body.username, hash]);
@@ -26,6 +35,10 @@ userController.createUser = (req, res, next) => {
     next();
   })
   .catch(err => {
+<<<<<<< HEAD
+    console.error(err);
+=======
+>>>>>>> master
     res.send(err);
   })
 }
