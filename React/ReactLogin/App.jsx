@@ -20,7 +20,7 @@ class App extends React.Component{
             username: username,
             password: password,
         }
-        fetch('/verifyUser', {
+        fetch('/loginUser', {
             method: 'POST',
             body: JSON.stringify(newPost),
             headers: {
